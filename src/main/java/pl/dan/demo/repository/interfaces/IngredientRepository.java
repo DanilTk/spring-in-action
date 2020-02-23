@@ -1,4 +1,4 @@
-package pl.dan.demo.repository;
+package pl.dan.demo.repository.interfaces;
 
 import pl.dan.demo.model.Ingredient;
 

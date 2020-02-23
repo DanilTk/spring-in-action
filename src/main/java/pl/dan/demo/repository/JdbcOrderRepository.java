@@ -22,13 +22,8 @@ public class JdbcOrderRepository implements OrderRepository {
 
     @Autowired
     public JdbcOrderRepository(JdbcTemplate jdbc) {
-        this.orderInserter = new SimpleJdbcInsert(jdbc)
-                .withTableName("Taco_Order")
-                .usingGeneratedKeyColumns("id");
-
-        this.orderTacoInserter = new SimpleJdbcInsert(jdbc)
-                .withTableName("Taco_Order_Tacos");
-
+        this.orderInserter = new SimpleJdbcInsert(jdbc).withTableName("Taco_Order").usingGeneratedKeyColumns("id");
+        this.orderTacoInserter = new SimpleJdbcInsert(jdbc).withTableName("Taco_Order_Tacos");
         this.objectMapper = new ObjectMapper();
     }
 
@@ -38,6 +33,7 @@ public class JdbcOrderRepository implements OrderRepository {
         long orderId = saveOrderDetails(order);
         order.setId(orderId);
         List<Taco> tacos = order.getTacos();
+
         for (Taco taco : tacos) {
             saveTacoToOrder(taco, orderId);
         }
@@ -46,14 +42,9 @@ public class JdbcOrderRepository implements OrderRepository {
     }
 
     private long saveOrderDetails(Order order) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> values =
-                objectMapper.convertValue(order, Map.class);
+        Map<String, Object> values = objectMapper.convertValue(order, Map.class);
         values.put("placedAt", order.getPlacedAt());
-
-        long orderId = orderInserter
-                .executeAndReturnKey(values)
-                .longValue();
+        long orderId = orderInserter.executeAndReturnKey(values).longValue();
 
         return orderId;
     }

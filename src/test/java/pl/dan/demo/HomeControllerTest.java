@@ -15,7 +15,7 @@ class WebConfigTest {
     @Autowired
     MockMvc mvc;
 
-//    @Test
+    //    @Test
     void testHome() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
